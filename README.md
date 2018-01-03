@@ -1,4 +1,6 @@
 # MCP3008 PHP library
+[![Latest Stable Version](https://img.shields.io/packagist/v/volantus/mcp3008.svg)](https://packagist.org/packages/volantus/mcp3008)
+
 PHP library for reading values from the A/D converter MCP3008
 
 ## Dependencies
