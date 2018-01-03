@@ -1,0 +1,26 @@
+{
+    "name": "volantus/mcp3008",
+    "description": "PHP library for reading values from the A/D converter MCP3008",
+    "type": "library",
+    "license": "GNUv3",
+    "authors": [
+        {
+            "name": "Marius Meissner",
+            "email": "marius.meissner@volantus.org"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php" : "^7.0",
+        "ext-berry-spi": "^0.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Volantus\\MCP3008\\": "src",
+            "Volantus\\MCP3008\\Tests\\": "tests"
+        }
+    }
+}
