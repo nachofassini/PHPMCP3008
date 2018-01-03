@@ -49,6 +49,15 @@ class Measurement
     }
 
     /**
+     * @return int
+     */
+    public function getChannel(): int
+    {
+        return $this->channel;
+    }
+
+
+    /**
      * @return float
      */
     public function getTimestamp(): float

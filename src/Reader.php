@@ -18,7 +18,7 @@ class Reader
     /**
      * @var float
      */
-    private $baseVoltage;
+    private $refVoltage;
 
     /**
      * Reader constructor.
@@ -29,8 +29,21 @@ class Reader
     public function __construct(SpiInterface $spiInterface, float $refVoltage = 3.3)
     {
         $this->spiInterface = $spiInterface;
-        $this->baseVoltage = $refVoltage;
+        $this->refVoltage = $refVoltage;
+
+        if (!$this->spiInterface->isOpen()) {
+            $this->spiInterface->open();
+        }
     }
+
+    public function __destruct()
+    {
+        try {
+            if ($this->spiInterface->isOpen()) {
+                $this->spiInterface->close();
+            }
+        } catch (\Throwable $e) {}
+     }
 
     /**
      * @param int $channel
@@ -39,6 +52,18 @@ class Reader
      */
     public function read(int $channel): Measurement
     {
+        if ($channel < 0 || $channel > 7) {
+            throw new InvalidChannelException('Invalid channel given => only channel between 0-7 supported');
+        }
 
+        $rawData = $this->spiInterface->transfer((8 + $channel) << 4);
+        $unpackedData = unpack('I*', $rawData);
+
+        if (count($unpackedData) !== 3) {
+            throw new InvalidSpiDataException('Received bad binary data via SPI => ' . bin2hex($rawData) . ', expected 3 words but received ' . count($unpackedData));
+        }
+
+        $adcValue = (($unpackedData[1] & 3) << 8) + $unpackedData[2];
+        return new Measurement($channel, $adcValue, null, $this->refVoltage);
     }
 }
