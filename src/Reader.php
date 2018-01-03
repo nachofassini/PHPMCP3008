@@ -24,12 +24,12 @@ class Reader
      * Reader constructor.
      *
      * @param SpiInterface $spiInterface
-     * @param float        $baseVoltage
+     * @param float        $refVoltage
      */
-    public function __construct(SpiInterface $spiInterface, float $baseVoltage = 3.3)
+    public function __construct(SpiInterface $spiInterface, float $refVoltage = 3.3)
     {
         $this->spiInterface = $spiInterface;
-        $this->baseVoltage = $baseVoltage;
+        $this->baseVoltage = $refVoltage;
     }
 
     /**
