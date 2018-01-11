@@ -58,14 +58,14 @@ class ReaderTest extends TestCase
 
     /**
      * @expectedException \Volantus\MCP3008\InvalidSpiDataException
-     * @expectedExceptionMessage Received bad binary data via SPI => 01000000020000000300000004000000, expected 3 words but received 4
+     * @expectedExceptionMessage Received bad binary data via SPI => [1,2,3,4], expected 3 words but received 4
      */
     public function test_read_invalidSpiData()
     {
         $this->spiInterface->expects(self::once())
             ->method('transfer')
-            ->with(self::equalTo(192))
-            ->willReturn(pack('I*', 1, 2, 3, 4));
+            ->with(self::equalTo([1, 192, 0]))
+            ->willReturn([1, 2, 3, 4]);
 
         $this->reader->read(4);
     }
@@ -74,12 +74,12 @@ class ReaderTest extends TestCase
     {
         $this->spiInterface->expects(self::once())
             ->method('transfer')
-            ->with(self::equalTo(208))
-            ->willReturn(pack('I*', 0, 512, 16));
+            ->with(self::equalTo([1, 208, 0]))
+            ->willReturn([0, 3, 255]);
 
         $result =$this->reader->read(5);
         self::assertEquals(5, $result->getChannel());
         self::assertEquals(3.3, $result->getRefVoltage());
-        self::assertEquals(512, $result->getRawValue());
+        self::assertEquals(1023, $result->getRawValue());
     }
 }

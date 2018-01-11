@@ -56,14 +56,14 @@ class Reader
             throw new InvalidChannelException('Invalid channel given => only channel between 0-7 supported');
         }
 
-        $rawData = $this->spiInterface->transfer((8 + $channel) << 4);
-        $unpackedData = unpack('I*', $rawData);
+        $data = $this->spiInterface->transfer([1, (8 + $channel) << 4, 0]);
 
-        if (count($unpackedData) !== 3) {
-            throw new InvalidSpiDataException('Received bad binary data via SPI => ' . bin2hex($rawData) . ', expected 3 words but received ' . count($unpackedData));
+        if (count($data) !== 3) {
+            throw new InvalidSpiDataException('Received bad binary data via SPI => ' . json_encode($data, true). ', expected 3 words but received ' . count($data));
         }
 
-        $adcValue = (($unpackedData[1] & 3) << 8) + $unpackedData[2];
+        $adcValue = (($data[1] & 3) << 8) + $data[2];
+
         return new Measurement($channel, $adcValue, null, $this->refVoltage);
     }
 }
