@@ -6,7 +6,7 @@
 PHP library for reading values from the A/D converter MCP3008
 
 ## Dependencies
-The library requires the one of the following dependencies to be installed:
+The library requires one of the following dependencies to be installed:
  * **[berry-spi](https://github.com/Volantus/berry-spi) extension**: Native direct communication
  * **[volantus/php-pigpio](https://github.com/Volantus/php-pigpio) composer library**: For using Pigpio daemon socket 
 
