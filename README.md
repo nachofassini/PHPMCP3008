@@ -1,5 +1,7 @@
 # MCP3008 PHP library
 [![Latest Stable Version](https://img.shields.io/packagist/v/volantus/mcp3008.svg)](https://packagist.org/packages/volantus/mcp3008)
+[![Build status](https://api.travis-ci.org/Volantus/MCP3008.svg?branch=master)](https://travis-ci.org/Volantus/php-pigpio)
+
 
 PHP library for reading values from the A/D converter MCP3008
 
