@@ -4,7 +4,9 @@
 PHP library for reading values from the A/D converter MCP3008
 
 ## Dependencies
-The library requires the [berry-spi](https://github.com/Volantus/berry-spi) extension to be installed
+The library requires the one of the following dependencies to be installed:
+ * **[berry-spi](https://github.com/Volantus/berry-spi) extension**: Native direct communication
+ * **[volantus/php-pigpio](https://github.com/Volantus/php-pigpio) composer library**: For using Pigpio daemon socket 
 
 ## Installation
 The library may be installed using Composer:
@@ -17,7 +19,31 @@ All measurements are done through the Reader class.
 
 The constructor requires an SpiInterface object and the ADC reference voltage, which is 3.3 per default on Raspberry.
 
-If you want to use the native SPI channels (recommended), you may use the RegularInterface:
+#### Using Pigpio daemon (socket)
+If you want to use the native SPI channels (recommended), you may use the `RegularSpiDevice`:
+
+```PHP
+use Volantus\MCP3008\Reader;
+use Volantus\Pigpio\Client;
+use Volantus\Pigpio\SPI\RegularSpiDevice;
+
+$spiInterface = new RegularSpiDevice(new Client(), 1, 32000, 0);
+$reader = new Reader($spiInterface, 3.3);
+```
+
+If you want to use any other GPIO Pins instead, please use the `BitBaningSpiDevice`:
+
+```PHP
+use Volantus\MCP3008\Reader;
+use Volantus\Pigpio\Client;
+use Volantus\Pigpio\SPI\BitBaningSpiDevice;
+
+$spiInterface = new BitBaningSpiDevice(new Client(), 12, 16, 20, 21, 32000);
+$reader = new Reader($spiInterface, 3.3);
+```
+
+#### Using direct communication via berry-spi extension:
+If you want to use the native SPI channels (recommended), you may use the `RegularInterface`:
 
 ```PHP
 use Volantus\BerrySpi\RegularInterface;
@@ -27,8 +53,7 @@ $spiInterface = new RegularInterface(1, 32000, 0);
 $reader = new Reader($spiInterface, 3.3);
 ```
 
-If you want to use any other GPIO Pins instead, please use the BitBangingInterface:
-
+If you want to use any other GPIO Pins instead, please use the `BitBangingInterface`:
 
 ```PHP
 use Volantus\BerrySpi\BitBangingInterface;
@@ -38,7 +63,8 @@ $spiInterface = new BitBangingInterface(12, 16, 20, 21, 32000, 0);
 $reader = new Reader($spiInterface, 3.3);
 ```
 
-Reading values is done by channel and value is returned as Measurement object:
+#### Reading values
+Reading values is done by channel and value is returned as `Measurement` object:
 ```PHP
 // Reading value of ADC channel 4
 $value = $reader->read(4);
