@@ -38,9 +38,9 @@ If you want to use any other GPIO Pins instead, please use the `BitBaningSpiDevi
 ```PHP
 use Volantus\MCP3008\Reader;
 use Volantus\Pigpio\Client;
-use Volantus\Pigpio\SPI\BitBaningSpiDevice;
+use Volantus\Pigpio\SPI\BitBangingSpiDevice;
 
-$spiInterface = new BitBaningSpiDevice(new Client(), 12, 16, 20, 21, 32000);
+$spiInterface = new BitBangingSpiDevice(new Client(), 12, 16, 20, 21, 32000);
 $reader = new Reader($spiInterface, 3.3);
 ```
 
