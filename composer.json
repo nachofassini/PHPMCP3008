@@ -7,15 +7,19 @@
         {
             "name": "Marius Meissner",
             "email": "marius.meissner@volantus.org"
+        },
+        {
+            "name": "Ignacio Fassini",
+            "email": "nachofassini@gmail.com"
         }
     ],
     "minimum-stability": "stable",
     "require": {
-        "php" : "^7.0"
+        "php": "^8.0.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.5",
-        "doctrine/instantiator": "~1.0.5"
+        "phpunit/phpunit": "^9.5.10",
+        "doctrine/instantiator": "~1.3.1"
     },
     "suggest": {
         "ext-berry-spi": "Allows directly/natively using SPI, without socket communication",

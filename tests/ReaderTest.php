@@ -4,6 +4,8 @@ namespace Volantus\MCP3008\Tests;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Volantus\BerrySpi\SpiInterface;
+use Volantus\MCP3008\InvalidChannelException;
+use Volantus\MCP3008\InvalidSpiDataException;
 use Volantus\MCP3008\Reader;
 
 /**
@@ -16,14 +18,14 @@ class ReaderTest extends TestCase
     /**
      * @var SpiInterface|MockObject
      */
-    private $spiInterface;
+    private MockObject|SpiInterface $spiInterface;
 
     /**
      * @var Reader
      */
-    private $reader;
+    private Reader $reader;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->spiInterface = $this->getMockBuilder(SpiInterface::class)
             ->disableOriginalConstructor()
@@ -47,21 +49,19 @@ class ReaderTest extends TestCase
         $this->reader = new Reader($this->spiInterface, 3.3);
     }
 
-    /**
-     * @expectedException \Volantus\MCP3008\InvalidChannelException
-     * @expectedExceptionMessage Invalid channel given => only channel between 0-7 supported
-     */
     public function test_read_badChannel()
     {
+        $this->expectException(InvalidChannelException::class);
+        $this->expectExceptionMessage("Invalid channel given => only channel between 0-7 supported");
+
         $this->reader->read(8);
     }
 
-    /**
-     * @expectedException \Volantus\MCP3008\InvalidSpiDataException
-     * @expectedExceptionMessage Received bad binary data via SPI => [1,2,3,4], expected 3 words but received 4
-     */
     public function test_read_invalidSpiData()
     {
+        $this->expectException(InvalidSpiDataException::class);
+        $this->expectExceptionMessage("Received bad binary data via SPI => [1,2,3,4], expected 3 words but received 4");
+
         $this->spiInterface->expects(self::once())
             ->method('transfer')
             ->with(self::equalTo([1, 192, 0]))
