@@ -27,8 +27,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Volantus\\MCP3008\\": "src",
-            "Volantus\\MCP3008\\Tests\\": "tests"
+            "Volantus\\MCP3008\\": "src/",
+            "Volantus\\MCP3008\\Tests\\": "tests/"
         }
     }
 }
